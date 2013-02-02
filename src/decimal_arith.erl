@@ -303,6 +303,8 @@ remainder(X, Y, Context) ->
   case compare(?MODULE:abs(X, Context), ?MODULE:abs(Y, Context), Context) of
     1 ->
       subtract(X, multiply(Y, divide_integer(X, Y, Context), Context), Context);
+    0 ->
+      zero();
     _ ->
       X
   end.

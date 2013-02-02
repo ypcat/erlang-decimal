@@ -232,6 +232,7 @@ unit_test_() ->
   , ?_assertEqual({1,12,1}, reduce("-120"))
   , ?_assertEqual({0,12,1}, reduce("120.00"))
   , ?_assertEqual({0,0,0}, reduce("0.00"))
+  , ?_assertEqual({0,0,0}, remainder("1", "1"))
   , ?_assertEqual({0,21,-1}, remainder("2.1", "3"))
   , ?_assertEqual({0,1,0}, remainder("10", "3"))
   , ?_assertEqual({1,1,0}, remainder("-10", "3"))
