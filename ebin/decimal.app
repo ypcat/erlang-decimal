@@ -1,5 +1,5 @@
 {application, decimal, [
-  {vsn, "0.1.0"},
+  {vsn, "0.2.0"},
   {description, "An Erlang decimal arithmetic library"},
   {modules, [
     decimal,
