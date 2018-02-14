@@ -40,8 +40,10 @@ apply_increment(round_down, _, _, _) ->
   false;
 apply_increment(round_half_up, _, _, [Digit|_]) ->
   Digit >= ?HALF;
-apply_increment(round_half_even, _, SignificantDigits, [Digit|_]) ->
-  Digit > ?HALF orelse (Digit =:= ?HALF andalso lists:last(SignificantDigits) rem 2 =:= 1);
+apply_increment(round_half_even, _, SignificantDigits, [Digit|R]) ->
+    Digit > ?HALF orelse
+    (Digit =:= ?HALF andalso (lists:any(fun(D) -> D > $0 end, R) orelse
+                              lists:last(SignificantDigits) rem 2 =:= 1));
 apply_increment(round_ceiling, S, _, RemainingDigits) ->
   S =:= 0 andalso any_nonzero(RemainingDigits);
 apply_increment(round_floor, S, _, RemainingDigits) ->
@@ -71,6 +73,8 @@ unit_test_() ->
   , ?_assertEqual({0,10,-1}, ?MODULE:apply(round_half_even, 2, {0,102,-2}))
   , ?_assertEqual({0,10,-1}, ?MODULE:apply(round_half_even, 2, {0,104,-2}))
   , ?_assertEqual({0,10,-1}, ?MODULE:apply(round_half_even, 2, {0,105,-2}))
+  , ?_assertEqual({0,10,-1}, ?MODULE:apply(round_half_even, 2, {0,10500,-4}))
+  , ?_assertEqual({0,11,-1}, ?MODULE:apply(round_half_even, 2, {0,10501,-4}))
   , ?_assertEqual({0,11,-1}, ?MODULE:apply(round_half_even, 2, {0,106,-2}))
   , ?_assertEqual({0,11,-1}, ?MODULE:apply(round_half_even, 2, {0,108,-2}))
   , ?_assertEqual({0,67,-1}, ?MODULE:apply(round_half_even, 2, {0,666,-2}))
